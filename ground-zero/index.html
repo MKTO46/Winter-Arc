@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d0f10">
+<title>Ground Zero · Wolf Protocol</title>
+<style>
+:root{
+  --bg:#0d0f10;
+  --bg2:#141719;
+  --panel:#171b1d;
+  --panel2:#1b2023;
+  --line:#2f383a;
+  --text:#f2efea;
+  --muted:#b8b8b2;
+  --accent:#b46342;
+  --accent2:#6f7f67;
+  --accent3:#6b7e9d;
+  --accent4:#7d6a8c;
+  --ok:#7fb388;
+  --warn:#d9ae6b;
+  --danger:#c97878;
+  --glow:0 0 0 1px rgba(255,255,255,.03), 0 10px 30px rgba(0,0,0,.28);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:
+ radial-gradient(circle at 10% 0%, rgba(180,99,66,.18), transparent 28%),
+ radial-gradient(circle at 100% 0%, rgba(111,127,103,.18), transparent 25%),
+ radial-gradient(circle at 50% 100%, rgba(107,126,157,.14), transparent 28%),
+ linear-gradient(180deg,#0b0d0e 0%, #101416 45%, #0a0c0d 100%);
+ color:var(--text)}
+main{max-width:760px;margin:auto;padding:18px 14px 120px}
+header{padding:8px 0 18px;position:relative}
+header:before{content:"";position:absolute;inset:0;border-radius:24px;background:linear-gradient(135deg, rgba(180,99,66,.10), rgba(107,126,157,.06) 45%, rgba(111,127,103,.08));filter:blur(0px);pointer-events:none}
+.eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:.75rem;font-weight:900;color:#f0c4b1}
+h1{margin:6px 0 8px;font-size:2.55rem;line-height:.93;letter-spacing:-.06em}
+p{line-height:1.45}.muted,small{color:var(--muted)}
+.card{background:linear-gradient(180deg, rgba(28,34,37,.95), rgba(21,24,26,.95));border:1px solid var(--line);box-shadow:var(--glow);border-radius:22px;padding:16px;margin:14px 0}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.pill{padding:7px 12px;border-radius:999px;background:#272d30;border:1px solid #394244;font-size:.84rem}
+.pill.level{background:linear-gradient(90deg, rgba(180,99,66,.24), rgba(111,127,103,.18));border-color:#685349;font-weight:800}
+.tabs{position:sticky;top:0;z-index:10;display:flex;gap:8px;padding:10px 0 12px;background:linear-gradient(180deg, rgba(11,13,14,.92), rgba(11,13,14,.72), transparent)}
+.tabs button, button{appearance:none;border:1px solid #465053;background:#242a2d;color:var(--text);border-radius:16px;padding:14px 16px;min-height:52px;font-weight:800;cursor:pointer}
+.tabs button{flex:1;padding:12px 6px;font-size:.86rem}
+.tabs button.active{background:linear-gradient(180deg, rgba(180,99,66,.34), rgba(81,57,48,.55));border-color:#99715a}
+button.primary{background:linear-gradient(180deg, rgba(180,99,66,.95), rgba(117,72,49,.95));border-color:#d29e84;color:#fff}
+button.secondary{background:linear-gradient(180deg, rgba(111,127,103,.42), rgba(49,63,54,.62));border-color:#8a9b84}
+button.cool{background:linear-gradient(180deg, rgba(107,126,157,.45), rgba(52,63,82,.7));border-color:#8898b0}
+button.purple{background:linear-gradient(180deg, rgba(125,106,140,.46), rgba(62,53,74,.7));border-color:#a48fb4}
+button.selected{outline:2px solid rgba(242,239,234,.26)}
+button:disabled{opacity:.42;cursor:not-allowed}
+.hidden{display:none!important}.grid{display:grid;gap:10px}.grid.two{grid-template-columns:repeat(2,1fr)}
+.stat{background:#0f1314;border:1px solid #2d3436;border-radius:18px;padding:12px}.stat small{display:block;color:var(--muted);margin-bottom:4px}.stat strong{font-size:1.5rem}
+.progress{height:10px;border-radius:999px;overflow:hidden;background:#24292b;border:1px solid #32383a}.progress>div{height:100%;background:linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3))}
+.mission{background:#111416;border:1px solid #33393c;border-radius:16px;padding:14px;margin:10px 0}.mission.done{border-color:#69866d;background:#131c16}
+.mission strong{display:block;margin-bottom:6px}
+.daybtn{width:100%}.daybtn.completed{background:linear-gradient(180deg, rgba(111,127,103,.42), rgba(49,63,54,.62));border-color:#8a9b84}
+.daybtn.today{box-shadow:0 0 0 1px rgba(240,196,177,.30), 0 0 0 4px rgba(180,99,66,.08)}
+.list{display:grid;gap:8px}.list .row{display:flex;justify-content:space-between;gap:10px;padding:11px 12px;background:#101315;border:1px solid #2e3639;border-radius:12px}.tiny{font-size:.82rem}.danger{color:var(--danger)}.ok{color:var(--ok)}.warn{color:var(--warn)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;background:#202527;border:1px solid #586164;color:var(--text);padding:12px 18px;border-radius:14px;display:none;z-index:50}
+footer{margin-top:20px;text-align:center;color:var(--muted);font-size:.82rem}
+@media (max-width:410px){h1{font-size:2.15rem}.tabs button{font-size:.77rem}}
+</style>
+</head>
+<body>
+<main>
+  <header class="card">
+    <div class="eyebrow">Ground Zero · WOLF-01</div>
+    <h1>TAP MODE<br>LEVEL SYSTEM</h1>
+    <p class="muted">No typing. No spreadsheets. Just train, tap done, and earn the next level.</p>
+    <div class="pillrow">
+      <span class="pill level" id="levelPill">LEVEL 01 · FOUNDATION</span>
+      <span class="pill" id="cyclePill">Cycle starts Oct 27</span>
+      <span class="pill" id="reviewPill">Review Nov 10</span>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="today" class="active">TODAY</button>
+    <button data-tab="plan">14 DAYS</button>
+    <button data-tab="review">REVIEW</button>
+    <button data-tab="body">BLUEPRINT</button>
+  </nav>
+
+  <section id="today">
+    <div class="card" id="startCard"></div>
+    <div class="card" id="todayCard"></div>
+  </section>
+
+  <section id="plan" class="hidden">
+    <div class="card">
+      <h2 style="margin:0 0 6px">Your 14-day cycle</h2>
+      <p class="muted">You can only level up if all 14 days are completed. Recovery day still counts — just finish the day.</p>
+      <div id="cycleProgress" class="grid"></div>
+    </div>
+  </section>
+
+  <section id="review" class="hidden">
+    <div class="card">
+      <h2 style="margin:0 0 8px">Two-week review gate</h2>
+      <div class="grid two">
+        <div class="stat"><small>Days completed</small><strong id="daysDone">0/14</strong></div>
+        <div class="stat"><small>Days until review</small><strong id="daysLeft">14</strong></div>
+      </div>
+      <p id="gateText" class="muted"></p>
+      <div id="missingBox"></div>
+      <div id="checkList" class="list" style="margin-top:12px"></div>
+      <div class="grid two" style="margin-top:12px">
+        <button id="stayBtn" class="purple">STAY AT THIS LEVEL</button>
+        <button id="upBtn" class="primary">LEVEL UP</button>
+      </div>
+      <p class="tiny muted" style="margin-top:10px">Rule: if you miss a day, you do not level up. You repeat the level and rebuild the streak. No punishment. Just honesty.</p>
+    </div>
+  </section>
+
+  <section id="body" class="hidden">
+    <div class="card">
+      <h2 style="margin:0 0 8px">Ground Zero blueprint</h2>
+      <p class="muted">This is the aesthetic target behind the training: broad shoulders, Wolf back, Predator arms, strong core, athletic legs, sleeper build. More muscle, less fat, dramatic definition when flexed.</p>
+      <div class="list" id="measureList"></div>
+    </div>
+  </section>
+
+  <footer>WOLF-01 · dark, grounded, military-athletic · progress beats punishment.</footer>
+</main>
+<div id="toast"></div>
+<script>
+const APP_KEY='ground-zero-tap-wolf-v2';
+const START_DATE='2026-10-27';
+const LEVEL_LEN=14;
+const BASE={
+  height:'66 in', weight:'218.5 lb', bodyfat:'45.7%', shoulderCirc:'48 in', shoulderWidth:'21 in',
+  chest:'42.5 in', underbust:'36 in', waist:'42.75 in', abdomen:'45 in', hips:'47 in',
+  upperArms:'14 in / 14 in', forearms:'10 in / 10 in', thighs:'28 in / 28 in', calves:'17 in / 17 in'
+};
+const BODY_LABELS={
+  height:'Height', weight:'Weight', bodyfat:'Estimated body fat', shoulderCirc:'Shoulder circumference', shoulderWidth:'Shoulder width',
+  chest:'Chest', underbust:'Underbust', waist:'Waist', abdomen:'Abdomen', hips:'Hips', upperArms:'Upper arms', forearms:'Forearms', thighs:'Thighs', calves:'Calves'
+};
+const DAY_PLAN=[
+  {name:'Tuesday', title:'HUNTER LEGS · CORE', desc:'Leg strength + core control.', tasks:['Warm-up 5–8 min','Leg press — 2 × 10–12','Seated hamstring curl — 2 × 10–12','Low step-ups — 2 × 8 per leg','Calf raises — 2 × 12–15','Pallof press — 2 × 10 per side','Recovery walk if legs feel okay']},
+  {name:'Wednesday', title:'PREDATOR ARMS · SHIELD', desc:'Chest, shoulders, arms, plus short jog intervals.', tasks:['Warm-up 5–8 min','Chest press — 2 × 8–12','Neutral-grip shoulder press — 2 × 8–10 if pain-free','Lateral raise — 2 × 12–15','Triceps pushdown — 2 × 10–12','Incline push-ups — 2 × 6–10','Side plank — 2 × 15–20 sec per side','Jog/walk: 5 × 20–30 sec easy jog']},
+  {name:'Thursday', title:'GROUND · CRAWL-OUT CONTROL', desc:'Mobility, crawl-outs, core.', tasks:['Wrist / shoulder / hip mobility — 5 min','Quadrupedal rocking — 2 × 8','Hands-and-knees crawl — 3 × 10–15 sec','Short crawl-outs — 2 × 3','Bird dog — 2 × 6 per side','Easy walk 10–20 min']},
+  {name:'Friday', title:'FULL BODY WOLF · LIGHT', desc:'Back, push, core, carry, short jog.', tasks:['Warm-up 5–8 min','Light row or pulldown — 2 × 10','Incline push-up — 2 × 6–10','Leg press — 2 × 10','Face pull — 2 × 12','Cable woodchop — 2 × 10 per side','Light farmer carry — 2 × 20 sec','Jog/walk: 5 × 20–30 sec easy jog']},
+  {name:'Saturday', title:'FIELD · FOOTBALL SKILLS', desc:'Move outside. Keep it athletic.', tasks:['Brisk walk 5–8 min','Controlled accelerations — 4 × 5 m','Lateral shuffles — 3 × 10 sec','Walk-to-stop footwork — 3 × 15 sec','North Mount Carmel perimeter circuit','Cool down and stretch']},
+  {name:'Sunday', title:'RECOVERY DAY', desc:'Recovery counts. You still must finish the day.', tasks:['Complete rest OR leisurely walk','Optional mobility 5–10 min','Check knees, elbows, shoulders, energy, sleep','Tap COMPLETE DAY when done']},
+  {name:'Monday', title:'WOLF BACK · LATS + GRIP', desc:'Back thickness + grip.', tasks:['Warm-up: 5–8 min','Lat pulldown — 2 × 8–12, ≤85 lb','Seated cable row — 2 × 6–10, ≤85 lb','Rear delt fly — 2 × 12–15','Hammer curls — 2 × 8–12','Light farmer carry — 2 × 20 sec','Dead bug — 2 × 8 per side']}
+];
+function cycleTemplate(start){
+  return Array.from({length:LEVEL_LEN}, (_,i)=>{ let date=addDays(start,i); let p=DAY_PLAN[i%7]; return {...p,date}; });
+}
+function initial(){ return {version:2, level:1, cycleStart:START_DATE, completed:{}, logs:[], reviews:[]}; }
+let state; try{ state={...initial(), ...JSON.parse(localStorage.getItem(APP_KEY)||'{}')}; } catch(e){ state=initial(); }
+if(!state.version || state.version<2){ state=initial(); }
+const $=id=>document.getElementById(id);
+const parseDate=s=>new Date(s+'T12:00:00');
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today=()=>iso(new Date());
+const addDays=(s,n)=>{ let d=parseDate(s); d.setDate(d.getDate()+n); return iso(d); };
+const diffDays=(a,b)=>Math.floor((parseDate(b)-parseDate(a))/86400000);
+const fmt=s=>parseDate(s).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const esc=s=>String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const save=()=>{ localStorage.setItem(APP_KEY, JSON.stringify(state)); draw(); };
+const toast=t=>{ let el=$('toast'); el.textContent=t; el.style.display='block'; setTimeout(()=>el.style.display='none',2400); };
+let checks=[false,false,false,false];
+function currentCycle(){ return cycleTemplate(state.cycleStart); }
+function reviewDate(){ return addDays(state.cycleStart, LEVEL_LEN); }
+function completedInCycle(){ const set=new Set(); currentCycle().forEach(day=>{ if(state.completed[day.date]) set.add(day.date); }); return [...set]; }
+function allDone(){ return completedInCycle().length===LEVEL_LEN; }
+function isStarted(){ return today()>=START_DATE; }
+function currentDayPlan(){
+  if(today()<state.cycleStart) return currentCycle()[0];
+  const cycle=currentCycle();
+  const found=cycle.find(x=>x.date===today());
+  if(found) return found;
+  const idx=((new Date().getDay()+6)%7); // fallback Monday-based
+  const map=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const name=map[idx];
+  return DAY_PLAN.find(x=>x.name===name) || cycle[0];
+}
+function completeToday(){
+  if(today()<state.cycleStart){ toast('Your first cycle starts tomorrow.'); return; }
+  const key=today();
+  if(state.completed[key]){ toast('Today is already complete.'); return; }
+  state.completed[key]=true;
+  state.logs.push({date:key, type:currentDayPlan().title});
+  save();
+  toast('Day completed ✓');
+}
+function undoToday(){
+  const key=today();
+  if(!state.completed[key]) return;
+  delete state.completed[key];
+  const idx=state.logs.findIndex(x=>x.date===key);
+  if(idx>=0) state.logs.splice(idx,1);
+  save();
+  toast('Today undone');
+}
+function drawStartCard(){
+  if(today()<START_DATE){
+    const days=diffDays(today(), START_DATE);
+    $('startCard').innerHTML=`<h2 style="margin:0 0 8px">Locked in. Starts tomorrow.</h2>
+      <p class="muted">This cycle begins <strong>${fmt(START_DATE)}</strong>. Tomorrow is <strong>${esc(cycleTemplate(START_DATE)[0].title)}</strong>.</p>
+      <div class="grid two"><div class="stat"><small>Start date</small><strong>${fmt(START_DATE)}</strong></div><div class="stat"><small>Days until start</small><strong>${days}</strong></div></div>`;
+  } else {
+    $('startCard').innerHTML=`<h2 style="margin:0 0 8px">Level ${String(state.level).padStart(2,'0')} is live.</h2>
+      <p class="muted">Rule set: complete all 14 days to earn a level-up review. Miss a day? Stay and rebuild.</p>
+      <div class="grid two"><div class="stat"><small>Cycle start</small><strong>${fmt(state.cycleStart)}</strong></div><div class="stat"><small>Review date</small><strong>${fmt(reviewDate())}</strong></div></div>`;
+  }
+}
+function drawToday(){
+  const p=currentDayPlan();
+  const started=today()>=state.cycleStart;
+  const done=!!state.completed[today()];
+  const due = diffDays(state.cycleStart, today());
+  $('todayCard').innerHTML=`
+    <small class="muted">${started ? parseDate(today()).toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'}) : 'Preview'}</small>
+    <h2 style="margin:4px 0 6px">${esc(p.title)}</h2>
+    <p class="muted">${esc(p.desc)}</p>
+    <div class="progress"><div style="width:${Math.min(100, (completedInCycle().length/LEVEL_LEN)*100)}%"></div></div>
+    <p class="tiny muted" style="margin:8px 0 12px">Cycle completion: ${completedInCycle().length} / ${LEVEL_LEN} days</p>
+    ${p.tasks.map(t=>`<div class="mission ${done?'done':''}"><strong>${esc(t)}</strong></div>`).join('')}
+    <div class="grid two" style="margin-top:12px">
+      <button class="primary" ${(!started||done)?'disabled':''} id="completeBtn">COMPLETE TODAY ✓</button>
+      <button class="cool" ${(!done)?'disabled':''} id="undoBtn">UNDO TODAY</button>
+    </div>
+    <p class="tiny muted" style="margin-top:10px">One tap completes the day. No rep typing. Recovery day still counts.</p>`;
+  $('completeBtn')?.addEventListener('click', completeToday);
+  $('undoBtn')?.addEventListener('click', undoToday);
+}
+function drawPlan(){
+  const cycle=currentCycle();
+  $('cycleProgress').innerHTML=cycle.map((d,i)=>{
+    const done=!!state.completed[d.date];
+    const todayFlag=d.date===today();
+    return `<button class="daybtn ${done?'completed':''} ${todayFlag?'today':''}">
+      <div style="text-align:left"><strong>DAY ${i+1}</strong><br><span class="tiny muted">${esc(d.name)} · ${fmt(d.date)}</span><br><span>${done?'✓ Completed':'○ Not done'}</span><br><span class="tiny">${esc(d.title)}</span></div>
+    </button>`;
+  }).join('');
+}
+function drawReview(){
+  const doneCount=completedInCycle().length;
+  const daysUntil=Math.max(0, diffDays(today(), reviewDate()));
+  const reviewReady = today()>=reviewDate();
+  $('daysDone').textContent=`${doneCount}/14`;
+  $('daysLeft').textContent=daysUntil;
+  const missing=currentCycle().filter(d=>!state.completed[d.date]);
+  let gate='';
+  if(!reviewReady){ gate=`Your review opens on ${fmt(reviewDate())}. Finish every single day first.`; }
+  else if(doneCount<14){ gate='Review is open, but the level-up gate is LOCKED because all 14 days were not completed.'; }
+  else { gate='All 14 days are complete. If your body feels good, you may level up.'; }
+  $('gateText').innerHTML=gate;
+  $('missingBox').innerHTML = missing.length ? `<div class="card" style="margin:12px 0 0;padding:12px;border-radius:16px;background:#131617"><strong class="danger">Missing days</strong>${missing.map(m=>`<div class="row tiny" style="margin-top:6px">• ${fmt(m.date)} — ${esc(m.name)}</div>`).join('')}</div>` : `<p class="ok tiny">✓ No missing days in this cycle.</p>`;
+  const prompts=[
+    'My form stayed controlled through the cycle.',
+    'My joints are okay — no concerning or worsening pain.',
+    'My recovery, sleep, and food were solid enough.',
+    'I feel ready for a small, safe progression.'
+  ];
+  $('checkList').innerHTML=prompts.map((p,i)=>`<button class="${checks[i]?'secondary selected':''}" id="check-${i}">${checks[i]?'✓':'○'} ${esc(p)}</button>`).join('');
+  prompts.forEach((_,i)=>$('check-'+i).onclick=()=>{checks[i]=!checks[i]; drawReview(); updateButtons();});
+  updateButtons();
+}
+function updateButtons(){
+  const ready = today()>=reviewDate();
+  const allowed = ready && allDone() && checks.every(Boolean);
+  $('upBtn').disabled=!allowed;
+  $('stayBtn').disabled=!ready;
+}
+function review(outcome){
+  if(outcome==='up'){
+    if(today()<reviewDate()){ toast('Review is not open yet.'); return; }
+    if(!allDone()){ toast('You did not complete all 14 days. Stay and rebuild.'); return; }
+    if(!checks.every(Boolean)){ toast('Answer all review checks honestly first.'); return; }
+    state.reviews.push({date:today(), level:state.level, outcome:'up'});
+    state.level += 1;
+    state.cycleStart = today();
+    checks=[false,false,false,false];
+    save();
+    toast('Level up earned.');
+  } else {
+    if(today()<reviewDate()){ toast('Review is not open yet.'); return; }
+    state.reviews.push({date:today(), level:state.level, outcome:'stay'});
+    state.cycleStart = today();
+    // keep completions history but new cycle reads from new dates only
+    checks=[false,false,false,false];
+    save();
+    toast('Stayed at current level.');
+  }
+}
+function drawBody(){
+  $('measureList').innerHTML=Object.entries(BASE).map(([k,v])=>`<div class="row"><span>${esc(BODY_LABELS[k])}</span><strong>${esc(v)}</strong></div>`).join('') +
+  `<div class="row"><span>Long-term look</span><strong>More muscle, less fat, visible abs/obliques, sleeper build</strong></div>`;
+}
+function drawHeader(){
+  $('levelPill').textContent=`LEVEL ${String(state.level).padStart(2,'0')} · ${state.level===1?'FOUNDATION':'WOLF DEVELOPMENT'}`;
+  $('cyclePill').textContent=`Cycle starts ${fmt(state.cycleStart)}`;
+  $('reviewPill').textContent=`Review ${fmt(reviewDate())}`;
+}
+function draw(){ drawHeader(); drawStartCard(); drawToday(); drawPlan(); drawReview(); drawBody(); }
+document.querySelectorAll('.tabs button').forEach(btn=>btn.onclick=()=>{
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active', b===btn));
+  ['today','plan','review','body'].forEach(id=>$(id).classList.toggle('hidden', id!==btn.dataset.tab));
+});
+$('upBtn').onclick=()=>{ if(confirm('Level up only if you completed all 14 days and feel genuinely ready. Proceed?')) review('up'); };
+$('stayBtn').onclick=()=>{ if(confirm('Repeat this level for another 14-day cycle?')) review('stay'); };
+draw();
+</script>
+</body>
+</html>
